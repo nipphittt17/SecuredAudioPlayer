@@ -1,4 +1,4 @@
-from generator import random_string
+from utils.generator import random_string
 
 
 class AES:
