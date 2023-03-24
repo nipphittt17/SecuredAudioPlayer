@@ -19,7 +19,7 @@ def encrypt_audio_file():
     if not raw_audio_file_base64:
         return jsonify({'error': 'RawAudioFileBase64 is not provided'}), 400
 
-    generated_secret_key = AES.generate_random_secret_key()
+    generated_secret_key = AES.generate_secret_key()
 
     # store secret key in database
     db.add_key(filename, generated_secret_key)
@@ -48,6 +48,9 @@ def decrypt_audio_file():
         return jsonify({'error': 'EncryptedAudioFileBase64 is not provided'}), 400
 
     secret_key = db.get_secret_key(filename)
+
+    if secret_key is None:
+        return jsonify({'error': 'No secret key is found'}), 400
 
     decrypted_audio_file_base64 = AES.decrypt_audio(
         encrypted_audio_file_base64,
