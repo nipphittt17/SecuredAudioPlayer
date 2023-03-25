@@ -66,6 +66,7 @@ class HomeView extends StatelessWidget {
                         padding: const EdgeInsets.all(13),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(7)),
+                        mouseCursor: SystemMouseCursors.click,
                         onPressed: () async {
                           final window =
                               await DesktopMultiWindow.createWindow(jsonEncode(
