@@ -1,6 +1,7 @@
+
 import 'dart:io';
 
-class AudioDto {
+class AudioDtoModel {
   String name = "";
   File? file;
 

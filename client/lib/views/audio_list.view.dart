@@ -44,7 +44,7 @@ class AudioListView extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final AudioItemModel model =
                               audioItemsProvider.audioList[index];
-                          return AudioItem(audio: model);
+                          return AudioItemWidget(audio: model);
                         },
                       )
                     ],

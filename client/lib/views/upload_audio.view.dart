@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:client/models/audio_dto.dart';
+import 'package:client/models/audio_dto.model.dart';
 import 'package:client/models/audio_item.model.dart';
 import 'package:client/providers/audio_items.provider.dart';
 import 'package:client/utils/utils.dart';
@@ -18,7 +18,7 @@ class UploadAudioView extends StatefulWidget {
 }
 
 class _UploadAudioViewState extends State<UploadAudioView> {
-  final AudioDto _audioDto = AudioDto();
+  final AudioDtoModel _audioDto = AudioDtoModel();
 
   final _ctrFilePath = TextEditingController();
   bool _isUploading = false;

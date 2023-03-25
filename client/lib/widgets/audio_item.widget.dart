@@ -1,8 +1,8 @@
 import 'package:client/models/audio_item.model.dart';
 import 'package:flutter/material.dart';
 
-class AudioItem extends StatelessWidget {
-  const AudioItem({super.key, required this.audio});
+class AudioItemWidget extends StatelessWidget {
+  const AudioItemWidget({super.key, required this.audio});
 
   final AudioItemModel audio;
 
