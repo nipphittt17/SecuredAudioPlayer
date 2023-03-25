@@ -56,7 +56,7 @@ class HomeView extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 20),
-                          Divider(),
+                          Divider(color: Colors.grey),
                           SizedBox(height: 20),
                         ],
                       ),
@@ -80,7 +80,7 @@ class HomeView extends StatelessWidget {
                           debugPrint('$window');
                           window
                             ..setFrame(
-                                const Offset(0, 0) & const Size(350, 350))
+                                const Offset(0, 0) & const Size(400, 450))
                             ..center()
                             ..setTitle('About client')
                             ..show();
