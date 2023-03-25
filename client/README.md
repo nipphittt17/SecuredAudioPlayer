@@ -1,10 +1,11 @@
-# secured_audio_player
+# client
 
-A new Flutter project.
+A starter Flutter app for macOS with `macos_ui`.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a starting point for a Flutter application specifically targeting macOS and uses the `macos_ui` plugin
+to achieve UI and UX that match their native AppKit counterparts as closely as possible.
 
 A few resources to get you started if this is your first Flutter project:
 
