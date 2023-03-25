@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:client/views/about.view.dart';
 import 'package:client/views/audio_list.view.dart';
 import 'package:client/views/home.view.dart';
+import 'package:client/views/upload_audio.view.dart';
 import 'package:collection/collection.dart';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,15 +12,28 @@ import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 void main(List<String> args) {
+  log(args.toString());
   if (args.firstOrNull == 'multi_window') {
     final windowId = int.parse(args[1]);
     final arguments = args[2].isEmpty
         ? const {}
         : jsonDecode(args[2]) as Map<String, dynamic>;
-    runApp(AboutView(
-      windowController: WindowController.fromWindowId(windowId),
-      args: arguments,
-    ));
+
+    final String view = arguments['view'];
+    if (view == 'About') {
+      log("Running About");
+      runApp(AboutView(
+        windowController: WindowController.fromWindowId(windowId),
+        args: arguments,
+      ));
+    }
+    if (view == 'upload') {
+      log("Running Upload View");
+      runApp(UploadAudioView(
+        windowController: WindowController.fromWindowId(windowId),
+        args: arguments,
+      ));
+    }
   } else {
     runApp(const App());
   }
@@ -63,7 +78,8 @@ class _MainViewState extends State<MainView> {
               onSelected: () async {
                 final window = await DesktopMultiWindow.createWindow(jsonEncode(
                   {
-                    'args1': 'About client',
+                    'view': 'About',
+                    'args1': 'About',
                     'args2': 500,
                     'args3': true,
                   },

@@ -1,4 +1,6 @@
-import 'package:client/views/upload_audio.view.dart';
+import 'dart:convert';
+
+import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -64,10 +66,23 @@ class HomeView extends StatelessWidget {
                         padding: const EdgeInsets.all(13),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(7)),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const UploadAudioView(),
+                        onPressed: () async {
+                          final window =
+                              await DesktopMultiWindow.createWindow(jsonEncode(
+                            {
+                              'view': 'upload',
+                              'args1': 'upload',
+                              'args2': 500,
+                              'args3': true,
+                            },
                           ));
+                          debugPrint('$window');
+                          window
+                            ..setFrame(
+                                const Offset(0, 0) & const Size(350, 350))
+                            ..center()
+                            ..setTitle('About client')
+                            ..show();
                         },
                         child: const Text("Upload Audio"),
                       )),
