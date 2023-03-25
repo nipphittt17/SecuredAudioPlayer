@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:client/providers/audio_items.provider.dart';
 import 'package:client/views/about.view.dart';
 import 'package:client/views/audio_list.view.dart';
 import 'package:client/views/home.view.dart';
-import 'package:client/views/upload_audio.view.dart';
 import 'package:collection/collection.dart';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:provider/provider.dart';
 
 void main(List<String> args) {
   log(args.toString());
@@ -27,13 +28,6 @@ void main(List<String> args) {
         args: arguments,
       ));
     }
-    if (view == 'upload') {
-      log("Running Upload View");
-      runApp(UploadAudioView(
-        windowController: WindowController.fromWindowId(windowId),
-        args: arguments,
-      ));
-    }
   } else {
     runApp(const App());
   }
@@ -45,13 +39,18 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MacosApp(
-      title: 'Secured Audio Player',
-      theme: MacosThemeData.light(),
-      darkTheme: MacosThemeData.dark(),
-      themeMode: ThemeMode.system,
-      home: const MainView(),
-      debugShowCheckedModeBanner: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AudioItemsProvider()),
+      ],
+      child: MacosApp(
+        title: 'Secured Audio Player',
+        theme: MacosThemeData.light(),
+        darkTheme: MacosThemeData.dark(),
+        themeMode: ThemeMode.system,
+        home: const MainView(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
