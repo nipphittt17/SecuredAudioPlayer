@@ -9,20 +9,20 @@ db = Database()
 @app.route('/encrypt-audio-file', methods=['POST'])
 def encrypt_audio_file():
     data = request.get_json()
+    device_id: str = data.get("DeviceId")
     filename: str = data.get("Filename")
     raw_audio_file_base64: str = data.get('RawAudioFileBase64')
 
-    if not filename and not raw_audio_file_base64:
-        return jsonify({'error': 'Both Filename and RawAudioFileBase64 are not provided'}), 400
-    if not filename:
-        return jsonify({'error': 'Filename is not provided'}), 400
-    if not raw_audio_file_base64:
-        return jsonify({'error': 'RawAudioFileBase64 is not provided'}), 400
+    if not device_id or not filename or not raw_audio_file_base64:
+        return jsonify({'error': 'Some fields are not provided'}), 400
 
     generated_secret_key = AES.generate_secret_key()
 
+    if not db.isValidFilename(device_id, filename):
+        return jsonify({'error': 'Duplicated filename is not allowed'}), 400
+
     # store secret key in database
-    db.add_key(filename, generated_secret_key)
+    db.add_key(device_id, filename, generated_secret_key)
 
     encrypted_audio_file_base64 = AES.encrypt_audio(
         raw_audio_file_base64,
@@ -37,17 +37,14 @@ def encrypt_audio_file():
 @app.route('/decrypt-audio-file', methods=['POST'])
 def decrypt_audio_file():
     data = request.get_json()
+    device_id: str = data.get("DeviceId")
     filename: str = data.get("Filename")
     encrypted_audio_file_base64: str = data.get('EncryptedAudioFileBase64')
 
-    if not filename and not encrypted_audio_file_base64:
-        return jsonify({'error': 'Both Filename and EncryptedAudioFileBase64 are not provided'}), 400
-    if not filename:
-        return jsonify({'error': 'Filename is not provided'}), 400
-    if not encrypted_audio_file_base64:
-        return jsonify({'error': 'EncryptedAudioFileBase64 is not provided'}), 400
+    if not device_id or not filename or not encrypted_audio_file_base64:
+        return jsonify({'error': 'Some fields are not provided'}), 400
 
-    secret_key = db.get_secret_key(filename)
+    secret_key = db.get_secret_key(device_id, filename)
 
     if secret_key is None:
         return jsonify({'error': 'No secret key is found'}), 400

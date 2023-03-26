@@ -13,7 +13,8 @@ class AES:
         # TODO: Add the logic here
         # This is just a placeholder, replace with correct logic
 
-        decrypted_audio_file_base64 = encrypted_audio_file_base64 + secret_key
+        decrypted_audio_file_base64 = encrypted_audio_file_base64.removesuffix(
+            secret_key)
         return decrypted_audio_file_base64
 
     @staticmethod
