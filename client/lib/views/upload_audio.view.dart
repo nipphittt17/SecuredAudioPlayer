@@ -1,9 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:client/models/audio_dto.model.dart';
 import 'package:client/models/audio_item.model.dart';
+import 'package:client/models/encrypted_audio_response.model.dart';
 import 'package:client/providers/audio_items.provider.dart';
-import 'package:client/utils/utils.dart';
+import 'package:client/services/cryptography.service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class UploadAudioView extends StatefulWidget {
 
 class _UploadAudioViewState extends State<UploadAudioView> {
   final AudioDtoModel _audioDto = AudioDtoModel();
+  final _cryptoService = CryptoGraphyService();
 
   final _ctrFilePath = TextEditingController();
   bool _isUploading = false;
@@ -27,6 +30,11 @@ class _UploadAudioViewState extends State<UploadAudioView> {
 
   @override
   Widget build(BuildContext context) {
+    final audioItemsProvider = Provider.of<AudioItemsProvider>(
+      context,
+      listen: false,
+    );
+
     return MacosScaffold(
       toolBar: const ToolBar(
         title: Text(''),
@@ -95,10 +103,11 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                                   await FilePicker.platform.pickFiles();
 
                               if (result != null) {
+                                // _audioDto.file =
+                                //     File(result.files.single.path!);
                                 _audioDto.file =
                                     File(result.files.single.path!);
-                                _ctrFilePath.text =
-                                    Utils.getFileName(result.files.first.path!);
+                                _ctrFilePath.text = result.files.single.name;
                               }
                             },
                           ),
@@ -129,16 +138,19 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                           _triggerSuccessfulMsg = false;
                         });
                         //
-                        await Future.delayed(const Duration(seconds: 2));
+                        await Future.delayed(const Duration(seconds: 1));
 
-                        final audioItemsProvider =
-                            Provider.of<AudioItemsProvider>(
-                          context,
-                          listen: false,
-                        );
+                        final EncryptedAudioResponse encryptedAudioRes =
+                            await _cryptoService.encryptAudioFile(_audioDto);
+
+                        log("Successful");
+                        log("Name: ${_audioDto.name}");
 
                         audioItemsProvider.addAudio(AudioItemModel(
-                            name: "Test", encryptedAudioFile: "w"));
+                          name: _audioDto.name,
+                          encryptedAudioFile:
+                              encryptedAudioRes.encryptedAudioFileBase64,
+                        ));
 
                         setState(() {
                           _isUploading = false;
