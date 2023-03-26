@@ -35,8 +35,11 @@ class _AudioItemWidgetState extends State<AudioItemWidget> {
           });
         },
         child: Container(
-          color:
-              _isHovering ? Colors.blue.withOpacity(0.2) : Colors.transparent,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color:
+                _isHovering ? Colors.blue.withOpacity(0.2) : Colors.transparent,
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: MacosListTile(
