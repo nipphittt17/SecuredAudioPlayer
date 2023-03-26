@@ -34,7 +34,10 @@ class AudioListView extends StatelessWidget {
             ContentArea(
               builder: (context, scrollController) {
                 return Padding(
-                  padding: const EdgeInsets.all(13.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 25,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -44,7 +47,10 @@ class AudioListView extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final AudioItemModel model =
                               audioItemsProvider.audioList[index];
-                          return AudioItemWidget(audio: model);
+                          return AudioItemWidget(
+                            sequence: index + 1,
+                            audio: model,
+                          );
                         },
                       )
                     ],
