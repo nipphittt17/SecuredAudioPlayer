@@ -49,140 +49,160 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                 horizontal: 50,
                 vertical: 10,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Upload Audio File",
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    children: [
-                      MacosTextField(
-                        padding: const EdgeInsets.all(8),
-                        prefix: const MacosIcon(CupertinoIcons.textformat),
-                        placeholder: "Name your audio file",
-                        maxLines: 1,
-                        onChanged: (value) {
-                          setState(() {
-                            _isValidDto = true;
-                            _triggerSuccessfulMsg = false;
-                          });
-                          _audioDto.name = value;
-                        },
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Upload Audio File",
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: MacosTextField(
-                              controller: _ctrFilePath,
-                              padding: const EdgeInsets.all(8),
-                              prefix: const MacosIcon(CupertinoIcons.folder),
-                              enabled: false,
-                              placeholder: "Selected File Path",
-                              maxLines: 1,
-                              style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis),
-                            ),
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      children: [
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: 600,
+                            minWidth: 100,
                           ),
-                          PushButton(
+                          child: MacosTextField(
                             padding: const EdgeInsets.all(8),
-                            buttonSize: ButtonSize.small,
-                            mouseCursor: SystemMouseCursors.click,
-                            child: const Text("Pick File"),
-                            onPressed: () async {
-                              final p = DeviceInfoPlugin();
-                              final mac = await p.macOsInfo;
-
+                            prefix: const MacosIcon(CupertinoIcons.textformat),
+                            placeholder: "Name your audio file",
+                            maxLines: 1,
+                            onChanged: (value) {
                               setState(() {
                                 _isValidDto = true;
                                 _triggerSuccessfulMsg = false;
                               });
-                              FilePickerResult? result =
-                                  await FilePicker.platform.pickFiles();
-
-                              if (result != null) {
-                                // _audioDto.file =
-                                //     File(result.files.single.path!);
-                                _audioDto.file =
-                                    File(result.files.single.path!);
-                                _ctrFilePath.text = result.files.single.name;
-                              }
+                              _audioDto.name = value;
                             },
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
+                        ),
+                        const SizedBox(height: 10),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: 600,
+                            minWidth: 100,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Flexible(
+                                child: MacosTextField(
+                                  controller: _ctrFilePath,
+                                  padding: const EdgeInsets.all(8),
+                                  prefix:
+                                      const MacosIcon(CupertinoIcons.folder),
+                                  enabled: false,
+                                  placeholder: "Selected File Path",
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                              ),
+                              PushButton(
+                                padding: const EdgeInsets.all(8),
+                                buttonSize: ButtonSize.small,
+                                mouseCursor: SystemMouseCursors.click,
+                                child: const Text("Pick File"),
+                                onPressed: () async {
+                                  final p = DeviceInfoPlugin();
+                                  final mac = await p.macOsInfo;
 
-                  /// Upload Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: PushButton(
-                      padding: const EdgeInsets.symmetric(vertical: 13),
-                      buttonSize: ButtonSize.large,
-                      onPressed: () async {
-                        final bool isValid = _audioDto.isValid();
-                        if (!isValid) {
+                                  setState(() {
+                                    _isValidDto = true;
+                                    _triggerSuccessfulMsg = false;
+                                  });
+                                  FilePickerResult? result =
+                                      await FilePicker.platform.pickFiles();
+
+                                  if (result != null) {
+                                    // _audioDto.file =
+                                    //     File(result.files.single.path!);
+                                    _audioDto.file =
+                                        File(result.files.single.path!);
+                                    _ctrFilePath.text =
+                                        result.files.single.name;
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+
+                    /// Upload Button
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: 800,
+                        minWidth: 400,
+                      ),
+                      child: PushButton(
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        buttonSize: ButtonSize.large,
+                        onPressed: () async {
+                          final bool isValid = _audioDto.isValid();
+                          if (!isValid) {
+                            setState(() {
+                              _isValidDto = false;
+                              _triggerSuccessfulMsg = false;
+                            });
+                            return;
+                          }
+
                           setState(() {
-                            _isValidDto = false;
+                            _isUploading = true;
                             _triggerSuccessfulMsg = false;
                           });
-                          return;
-                        }
+                          //
+                          await Future.delayed(const Duration(seconds: 1));
 
-                        setState(() {
-                          _isUploading = true;
-                          _triggerSuccessfulMsg = false;
-                        });
-                        //
-                        await Future.delayed(const Duration(seconds: 1));
+                          final EncryptedAudioResponse encryptedAudioRes =
+                              await _cryptoService.encryptAudioFile(_audioDto);
 
-                        final EncryptedAudioResponse encryptedAudioRes =
-                            await _cryptoService.encryptAudioFile(_audioDto);
+                          log("Successful");
+                          log("Name: ${_audioDto.name}");
 
-                        log("Successful");
-                        log("Name: ${_audioDto.name}");
+                          audioItemsProvider.addAudio(AudioItemModel(
+                            name: _audioDto.name,
+                            encryptedAudioFile:
+                                encryptedAudioRes.encryptedAudioFileBase64,
+                          ));
 
-                        audioItemsProvider.addAudio(AudioItemModel(
-                          name: _audioDto.name,
-                          encryptedAudioFile:
-                              encryptedAudioRes.encryptedAudioFileBase64,
-                        ));
-
-                        setState(() {
-                          _isUploading = false;
-                          _triggerSuccessfulMsg = true;
-                        });
-                      },
-                      mouseCursor: SystemMouseCursors.click,
-                      child: const Text("Start Upload"),
-                    ),
-                  ),
-
-                  if (_isUploading || !_isValidDto || _triggerSuccessfulMsg)
-                    const SizedBox(height: 20),
-                  if (!_isValidDto)
-                    const Text(
-                      "Filename should not be Empty\nAnd file should be mp3, wav, or wma",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.red,
+                          setState(() {
+                            _isUploading = false;
+                            _triggerSuccessfulMsg = true;
+                          });
+                        },
+                        mouseCursor: SystemMouseCursors.click,
+                        child: const Text("Start Upload"),
                       ),
                     ),
-                  if (_isUploading) const CupertinoActivityIndicator(),
-                  if (_triggerSuccessfulMsg)
-                    const Text(
-                      "Successfully Upload Audio to List",
-                      style: TextStyle(color: Colors.green),
-                    ),
-                ],
+
+                    if (_isUploading || !_isValidDto || _triggerSuccessfulMsg)
+                      const SizedBox(height: 20),
+                    if (!_isValidDto)
+                      const Text(
+                        "Filename should not be Empty\nAnd file should be mp3, wav, or wma",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                    if (_isUploading) const CupertinoActivityIndicator(),
+                    if (_triggerSuccessfulMsg)
+                      const Text(
+                        "Successfully Upload Audio to List",
+                        style: TextStyle(color: Colors.green),
+                      ),
+                  ],
+                ),
               ),
             );
           },
