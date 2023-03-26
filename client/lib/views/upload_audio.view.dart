@@ -6,6 +6,7 @@ import 'package:client/models/audio_item.model.dart';
 import 'package:client/models/encrypted_audio_response.model.dart';
 import 'package:client/providers/audio_items.provider.dart';
 import 'package:client/services/cryptography.service.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,9 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                             mouseCursor: SystemMouseCursors.click,
                             child: const Text("Pick File"),
                             onPressed: () async {
+                              final p = DeviceInfoPlugin();
+                              final mac = await p.macOsInfo;
+
                               setState(() {
                                 _isValidDto = true;
                                 _triggerSuccessfulMsg = false;

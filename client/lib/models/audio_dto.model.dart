@@ -1,7 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:client/models/send_raw_audio_response.model.dart';
+import 'package:client/utils/cryptography.util.dart';
+import 'package:client/utils/generator.util.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class AudioDtoModel {
   String name = "";
@@ -24,10 +26,15 @@ class AudioDtoModel {
   }
 
   Future<SendRawAudioResponseModel> convertToResponseModel() async {
-    final bytes = await file!.readAsBytes();
-    final base64String = base64.encode(bytes);
+    final macInfo = await DeviceInfoPlugin().macOsInfo;
+
+    // * Rarely the Hardware UUID will be null
+    final uniqueId = CryptographyUtil.sha256Hashing(
+        macInfo.systemGUID ?? GeneratorUtil.randomString());
+    final base64String = await CryptographyUtil.convertToBase64(file!);
 
     return SendRawAudioResponseModel(
+      deviceId: uniqueId,
       filename: name,
       rawAudioFileBase64: base64String,
     );

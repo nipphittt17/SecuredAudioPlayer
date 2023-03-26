@@ -9,7 +9,6 @@ class NetWorkApiService extends BaseApiService {
     switch (response.statusCode) {
       case 200:
         Map<String, dynamic> responseJson = jsonDecode(response.body);
-        log("returnResponse: $responseJson");
         return responseJson;
       default:
         throw Exception("Error Response");
@@ -24,9 +23,6 @@ class NetWorkApiService extends BaseApiService {
     dynamic responseJson;
     try {
       log(baseUrl + url);
-      final r = await http
-          .get(Uri.parse("https://jsonplaceholder.typicode.com/posts/1"));
-      log(r.body);
       final response = await http.post(
         Uri.parse(baseUrl + url),
         body: jsonEncode(body),

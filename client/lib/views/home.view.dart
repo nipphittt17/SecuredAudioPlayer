@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:client/views/upload_audio.view.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -8,6 +11,14 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final device = DeviceInfoPlugin();
+      final macDevice = device.macOsInfo;
+      macDevice.then((value) {
+        log("Logging in as ${value.systemGUID ?? "No Hardware UUID"}");
+      });
+    });
+
     return Builder(
       builder: (context) {
         return MacosScaffold(
