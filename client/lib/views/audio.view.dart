@@ -125,6 +125,7 @@ class _AudioViewState extends State<AudioView> {
                                 // Set Player
                                 await _justplayer.setAudioSource(
                                     MyCustomSource(bytes.toList()));
+                                await _justplayer.setVolume(0.5);
 
                                 // Set Duration
                                 _totalDuration = _justplayer.duration;
@@ -195,6 +196,30 @@ class _AudioViewState extends State<AudioView> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          StreamBuilder<double>(
+                            stream: _justplayer.volumeStream,
+                            builder: (context, snapshot) {
+                              double? currentVolume = snapshot.data;
+                              double? valVolume = currentVolume == null
+                                  ? 50
+                                  : currentVolume * 100;
+
+                              return CapacityIndicator(
+                                value: valVolume,
+                                onChanged: (value) {
+                                  if (_justplayer.audioSource != null) {
+                                    _justplayer.setVolume(value / 100);
+                                  }
+                                },
+                              );
+                            },
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -210,6 +235,7 @@ class _AudioViewState extends State<AudioView> {
   void dispose() {
     super.dispose();
     // _player.dispose();
+    _justplayer.dispose();
   }
 }
 
