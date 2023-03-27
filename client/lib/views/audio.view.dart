@@ -78,7 +78,7 @@ class _AudioViewState extends State<AudioView> {
                             thumbGlowRadius: 0,
                             thumbGlowColor: Colors.transparent,
                             onSeek: (duration) async {
-                              // await _player.seek(duration);
+                              await _justplayer.seek(duration);
                             },
                           );
                         },
@@ -86,12 +86,16 @@ class _AudioViewState extends State<AudioView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // Go Back to Start
                           MacosIconButton(
                             backgroundColor: Colors.transparent,
                             hoverColor: Colors.transparent,
                             shape: BoxShape.circle,
                             padding: const EdgeInsets.all(2),
-                            onPressed: () {},
+                            onPressed: () async {
+                              await _justplayer
+                                  .seek(const Duration(seconds: 0));
+                            },
                             icon: const Icon(
                               CupertinoIcons.chevron_left_2,
                               size: 100,
@@ -137,6 +141,14 @@ class _AudioViewState extends State<AudioView> {
                                 _isEnteringFirstTime = false;
                               }
 
+                              if (_totalDuration == _justplayer.position) {
+                                setState(() {
+                                  _isPlaying = false;
+                                  _justplayer.pause();
+                                });
+                                return;
+                              }
+
                               if (_isPlaying) {
                                 // pause
                                 _justplayer.pause();
@@ -161,12 +173,21 @@ class _AudioViewState extends State<AudioView> {
                                       ),
                           ),
                           const SizedBox(width: 10),
+
+                          // Go Right Button
                           MacosIconButton(
                             backgroundColor: Colors.transparent,
                             hoverColor: Colors.transparent,
                             shape: BoxShape.circle,
                             padding: const EdgeInsets.all(2),
-                            onPressed: () {},
+                            onPressed: () async {
+                              await _justplayer.seek(_totalDuration);
+
+                              setState(() {
+                                _isPlaying = false;
+                                _justplayer.pause();
+                              });
+                            },
                             icon: const Icon(
                               CupertinoIcons.chevron_right_2,
                               size: 100,
