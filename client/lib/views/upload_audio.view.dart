@@ -163,7 +163,7 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                           //
                           await Future.delayed(const Duration(seconds: 1));
 
-                          final EncryptedAudioResponse encryptedAudioRes =
+                          final EncryptedAudioResponseModel encryptedAudioRes =
                               await _cryptoService.encryptAudioFile(_audioDto);
 
                           log("Successful");

@@ -10,20 +10,20 @@ class CryptoGraphyService {
   final decryptApi = "/decrypt-audio-file";
   final _apiService = NetWorkApiService();
 
-  Future<EncryptedAudioResponse> encryptAudioFile(
+  Future<EncryptedAudioResponseModel> encryptAudioFile(
     AudioDtoModel audioDtoModel,
   ) async {
     final SendRawAudioResponseModel sendModel =
         await audioDtoModel.convertToResponseModel();
 
-    late final EncryptedAudioResponse result;
+    late final EncryptedAudioResponseModel result;
 
     try {
       final jsonResponse = await _apiService.postResponse(
         encryptApi,
         sendModel.toJson(),
       );
-      result = EncryptedAudioResponse.fromJson(jsonResponse);
+      result = EncryptedAudioResponseModel.fromJson(jsonResponse);
     } catch (e) {
       rethrow;
     }
