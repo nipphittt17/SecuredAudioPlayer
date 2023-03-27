@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart'
     as audio_ui;
+import 'package:audioplayers/audioplayers.dart';
 import 'package:client/models/audio_item.model.dart';
+import 'package:client/services/cryptography.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -17,6 +19,9 @@ class AudioView extends StatefulWidget {
 }
 
 class _AudioViewState extends State<AudioView> {
+  final _player = AudioPlayer();
+  final _cryptoService = CryptoGraphyService();
+
   bool _isPlaying = false;
   bool _isEnteringFirstTime = true;
   bool _isLoading = false;
@@ -94,6 +99,12 @@ class _AudioViewState extends State<AudioView> {
 
                                 await Future.delayed(
                                     const Duration(seconds: 1));
+
+                                final res = await _cryptoService
+                                    .decryptAudio(widget.audioItemModel);
+                                // log("Got encrypted file: ${res.decryptedAudioFileBase64}");
+
+                                // await _player.setSource();
 
                                 setState(() {
                                   _isLoading = false;

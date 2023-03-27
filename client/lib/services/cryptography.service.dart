@@ -1,5 +1,7 @@
 import 'package:client/data/network_api_service.dart';
 import 'package:client/models/audio_dto.model.dart';
+import 'package:client/models/audio_item.model.dart';
+import 'package:client/models/decrypted_audio_response.model.dart';
 import 'package:client/models/encrypted_audio_response.model.dart';
 import 'package:client/models/send_raw_audio_response.model.dart';
 
@@ -25,6 +27,25 @@ class CryptoGraphyService {
     } catch (e) {
       rethrow;
     }
+    return result;
+  }
+
+  Future<DecryptedAudioResponseModel> decryptAudio(
+      AudioItemModel audioItemModel) async {
+    final sendModel = await audioItemModel.convertToResponseModel();
+
+    late final DecryptedAudioResponseModel result;
+
+    try {
+      final jsonResponse = await _apiService.postResponse(
+        decryptApi,
+        sendModel.toJson(),
+      );
+      result = DecryptedAudioResponseModel.fromJson(jsonResponse);
+    } catch (e) {
+      rethrow;
+    }
+
     return result;
   }
 }
