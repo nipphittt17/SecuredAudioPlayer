@@ -1,12 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart'
     as audio_ui;
-import 'package:audioplayers/audioplayers.dart';
 import 'package:client/models/audio_item.model.dart';
 import 'package:client/services/cryptography.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class AudioView extends StatefulWidget {
@@ -19,12 +21,13 @@ class AudioView extends StatefulWidget {
 }
 
 class _AudioViewState extends State<AudioView> {
-  final _player = AudioPlayer();
+  final _justplayer = AudioPlayer();
   final _cryptoService = CryptoGraphyService();
 
   bool _isPlaying = false;
   bool _isEnteringFirstTime = true;
   bool _isLoading = false;
+  Duration? _totalDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -61,13 +64,16 @@ class _AudioViewState extends State<AudioView> {
                         progress: const Duration(milliseconds: 0000),
                         progressBarColor: Theme.of(context).primaryColor,
                         buffered: const Duration(milliseconds: 0),
-                        total: const Duration(minutes: 2, seconds: 30),
+                        total: _totalDuration ?? const Duration(seconds: 1),
+                        timeLabelTextStyle: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
                         thumbColor: Theme.of(context).primaryColor,
                         thumbCanPaintOutsideBar: true,
                         thumbGlowRadius: 0,
                         thumbGlowColor: Colors.transparent,
-                        onSeek: (duration) {
-                          log('User selected a new time: $duration');
+                        onSeek: (duration) async {
+                          // await _player.seek(duration);
                         },
                       ),
                       Row(
@@ -102,7 +108,18 @@ class _AudioViewState extends State<AudioView> {
 
                                 final res = await _cryptoService
                                     .decryptAudio(widget.audioItemModel);
-                                // log("Got encrypted file: ${res.decryptedAudioFileBase64}");
+                                final Uint8List bytes =
+                                    base64.decode(res.decryptedAudioFileBase64);
+
+                                // Set Player
+                                await _justplayer.setAudioSource(
+                                    MyCustomSource(bytes.toList()));
+
+                                // Set Duration
+                                _totalDuration = _justplayer.duration;
+
+                                log(_totalDuration?.inSeconds.toString() ??
+                                    "No duration");
 
                                 // await _player.setSource();
 
@@ -113,15 +130,16 @@ class _AudioViewState extends State<AudioView> {
                                 _isEnteringFirstTime = false;
                               }
 
+                              if (_isPlaying) {
+                                // pause
+                                _justplayer.pause();
+                              } else {
+                                // play
+                                _justplayer.play();
+                              }
                               setState(() {
                                 _isPlaying = !_isPlaying;
                               });
-
-                              if (_isPlaying) {
-                                // pause
-                              } else {
-                                // play
-                              }
                             },
                             icon: _isLoading
                                 ? const CupertinoActivityIndicator()
@@ -157,6 +175,31 @@ class _AudioViewState extends State<AudioView> {
           },
         ),
       ],
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // _player.dispose();
+  }
+}
+
+// Feed your own stream of bytes into the player
+class MyCustomSource extends StreamAudioSource {
+  final List<int> bytes;
+  MyCustomSource(this.bytes);
+
+  @override
+  Future<StreamAudioResponse> request([int? start, int? end]) async {
+    start ??= 0;
+    end ??= bytes.length;
+    return StreamAudioResponse(
+      sourceLength: bytes.length,
+      contentLength: end - start,
+      offset: start,
+      stream: Stream.value(bytes.sublist(start, end)),
+      contentType: 'audio/mpeg',
     );
   }
 }
