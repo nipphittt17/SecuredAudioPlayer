@@ -57,23 +57,30 @@ class _AudioViewState extends State<AudioView> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      audio_ui.ProgressBar(
-                        barHeight: 4,
-                        barCapShape: audio_ui.BarCapShape.round,
-                        baseBarColor: Colors.grey.withOpacity(0.2),
-                        progress: const Duration(milliseconds: 0000),
-                        progressBarColor: Theme.of(context).primaryColor,
-                        buffered: const Duration(milliseconds: 0),
-                        total: _totalDuration ?? const Duration(seconds: 1),
-                        timeLabelTextStyle: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        thumbColor: Theme.of(context).primaryColor,
-                        thumbCanPaintOutsideBar: true,
-                        thumbGlowRadius: 0,
-                        thumbGlowColor: Colors.transparent,
-                        onSeek: (duration) async {
-                          // await _player.seek(duration);
+                      StreamBuilder(
+                        stream: _justplayer.positionStream,
+                        builder: (context, snapshot) {
+                          Duration? currentDuration = snapshot.data;
+                          return audio_ui.ProgressBar(
+                            barHeight: 4,
+                            barCapShape: audio_ui.BarCapShape.round,
+                            baseBarColor: Colors.grey.withOpacity(0.2),
+                            progress: currentDuration ??
+                                const Duration(milliseconds: 0000),
+                            progressBarColor: Theme.of(context).primaryColor,
+                            buffered: const Duration(milliseconds: 0),
+                            total: _totalDuration ?? const Duration(seconds: 1),
+                            timeLabelTextStyle: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            thumbColor: Theme.of(context).primaryColor,
+                            thumbCanPaintOutsideBar: true,
+                            thumbGlowRadius: 0,
+                            thumbGlowColor: Colors.transparent,
+                            onSeek: (duration) async {
+                              // await _player.seek(duration);
+                            },
+                          );
                         },
                       ),
                       Row(
