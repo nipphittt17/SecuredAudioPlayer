@@ -196,10 +196,12 @@ class _AudioViewState extends State<AudioView> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const MacosIcon(CupertinoIcons.volume_down),
+                          const SizedBox(width: 10),
                           StreamBuilder<double>(
                             stream: _justplayer.volumeStream,
                             builder: (context, snapshot) {
@@ -208,16 +210,25 @@ class _AudioViewState extends State<AudioView> {
                                   ? 50
                                   : currentVolume * 100;
 
-                              return CapacityIndicator(
-                                value: valVolume,
-                                onChanged: (value) {
-                                  if (_justplayer.audioSource != null) {
-                                    _justplayer.setVolume(value / 100);
-                                  }
-                                },
+                              return ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 150,
+                                  minWidth: 50,
+                                ),
+                                child: CapacityIndicator(
+                                  semanticLabel: "Set Volume",
+                                  value: valVolume,
+                                  onChanged: (value) {
+                                    if (_justplayer.audioSource != null) {
+                                      _justplayer.setVolume(value / 100);
+                                    }
+                                  },
+                                ),
                               );
                             },
-                          )
+                          ),
+                          const SizedBox(width: 10),
+                          const MacosIcon(CupertinoIcons.volume_up),
                         ],
                       )
                     ],
