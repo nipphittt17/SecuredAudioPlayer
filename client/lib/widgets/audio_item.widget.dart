@@ -1,4 +1,5 @@
 import 'package:client/models/audio_item.model.dart';
+import 'package:client/views/audio.view.dart';
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
 
@@ -44,7 +45,11 @@ class _AudioItemWidgetState extends State<AudioItemWidget> {
             padding: const EdgeInsets.all(8.0),
             child: MacosListTile(
               mouseCursor: SystemMouseCursors.click,
-              onClick: () {},
+              onClick: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AudioView(audioItemModel: widget.audio),
+                ));
+              },
               leadingWhitespace: 10,
               title: Text(
                 widget.audio.name,
