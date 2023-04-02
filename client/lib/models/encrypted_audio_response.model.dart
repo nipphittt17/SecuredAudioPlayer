@@ -1,20 +1,20 @@
 import 'dart:convert';
 
-EncryptedAudioResponse encryptedAudioResponseFromJson(String str) =>
-    EncryptedAudioResponse.fromJson(json.decode(str));
+EncryptedAudioResponseModel encryptedAudioResponseFromJson(String str) =>
+    EncryptedAudioResponseModel.fromJson(json.decode(str));
 
-String encryptedAudioResponseToJson(EncryptedAudioResponse data) =>
+String encryptedAudioResponseToJson(EncryptedAudioResponseModel data) =>
     json.encode(data.toJson());
 
-class EncryptedAudioResponse {
-  EncryptedAudioResponse({
+class EncryptedAudioResponseModel {
+  EncryptedAudioResponseModel({
     required this.encryptedAudioFileBase64,
   });
 
   final String encryptedAudioFileBase64;
 
-  factory EncryptedAudioResponse.fromJson(Map<String, dynamic> json) =>
-      EncryptedAudioResponse(
+  factory EncryptedAudioResponseModel.fromJson(Map<String, dynamic> json) =>
+      EncryptedAudioResponseModel(
         encryptedAudioFileBase64: json["EncryptedAudioFileBase64"],
       );
 
