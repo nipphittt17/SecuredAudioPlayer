@@ -2,6 +2,7 @@ import os
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
+
 def pad_key(key):
     valid_key_sizes = [16, 24, 32]
     key_length = len(key)
@@ -13,6 +14,7 @@ def pad_key(key):
         return key + b'\0' * (valid_key_sizes[1] - key_length)
     else:
         return key + b'\0' * (valid_key_sizes[2] - key_length)
+
 
 # Generate a random 256-bit key and IV
 key = os.urandom(32)
@@ -31,7 +33,8 @@ cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=backend)
 # Pad the input string to a multiple of the block size
 block_size = algorithms.AES.block_size // 8
 padding_length = block_size - len(plaintext) % block_size
-padded_plaintext = plaintext.encode() + bytes([padding_length] * padding_length)
+padded_plaintext = plaintext.encode(
+) + bytes([padding_length] * padding_length)
 
 # Encrypt the padded plaintext
 encryptor = cipher.encryptor()
