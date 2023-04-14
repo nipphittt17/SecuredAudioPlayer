@@ -189,7 +189,7 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                       const SizedBox(height: 20),
                     if (!_isValidDto)
                       const Text(
-                        "Filename should not be Empty\nAnd file should be mp3, wav, or wma",
+                        "Filename should not be Empty\nAnd file should be mp3, or wav",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.red,

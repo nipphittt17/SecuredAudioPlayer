@@ -12,7 +12,6 @@ class AudioDtoModel {
   static List<String> availableFileExtension = [
     "mp3",
     "wav",
-    "wma",
   ];
 
   bool isValid() {
