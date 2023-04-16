@@ -10,7 +10,6 @@ class AES:
 
     def generate_secret_key() -> str:
         LENGTH_FOR_SECRET_KEY = 32
-        # return os.urandom(LENGTH_FOR_SECRET_KEY)
         return random_string(LENGTH_FOR_SECRET_KEY)
     
 
