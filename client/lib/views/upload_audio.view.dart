@@ -28,6 +28,7 @@ class _UploadAudioViewState extends State<UploadAudioView> {
   bool _isUploading = false;
   bool _isValidDto = true;
   bool _triggerSuccessfulMsg = false;
+  String? _secretKey;
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +179,7 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                           setState(() {
                             _isUploading = false;
                             _triggerSuccessfulMsg = true;
+                            _secretKey = encryptedAudioRes.secretKey;
                           });
                         },
                         mouseCursor: SystemMouseCursors.click,
@@ -201,6 +203,7 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                         "Successfully Upload Audio to List",
                         style: TextStyle(color: Colors.green),
                       ),
+                    if (_secretKey != null) SelectableText(_secretKey!)
                   ],
                 ),
               ),

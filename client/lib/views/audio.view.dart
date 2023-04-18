@@ -117,8 +117,10 @@ class _AudioViewState extends State<AudioView> {
                                 await Future.delayed(
                                     const Duration(seconds: 1));
 
-                                final res = await _cryptoService
-                                    .decryptAudio(widget.audioItemModel);
+                                final res = await _cryptoService.decryptAudio(
+                                  widget.audioItemModel,
+                                  "",
+                                );
                                 final Uint8List bytes =
                                     base64.decode(res.decryptedAudioFileBase64);
 

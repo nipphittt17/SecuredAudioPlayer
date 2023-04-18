@@ -31,15 +31,17 @@ class CryptoGraphyService {
   }
 
   Future<DecryptedAudioResponseModel> decryptAudio(
-      AudioItemModel audioItemModel) async {
-    final sendModel = await audioItemModel.convertToResponseModel();
+    AudioItemModel audioItemModel,
+    String secretKey,
+  ) async {
+    final sendModel = await audioItemModel.convertToResponseModel(secretKey);
 
     late final DecryptedAudioResponseModel result;
 
     try {
       final jsonResponse = await _apiService.postResponse(
         decryptApi,
-        sendModel.toJson(),
+        sendModel.toJson(secretKey),
       );
       result = DecryptedAudioResponseModel.fromJson(jsonResponse);
     } catch (e) {

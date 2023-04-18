@@ -1,18 +1,13 @@
 class SendEncryptedAudioResponseModel {
-  final String deviceId;
-  final String filename;
   final String encryptedAudioFileBase64;
 
   SendEncryptedAudioResponseModel({
-    required this.deviceId,
-    required this.filename,
     required this.encryptedAudioFileBase64,
   });
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(String secretKey) {
     return {
-      "DeviceId": deviceId,
-      "Filename": filename,
+      "SecretKey": secretKey,
       "EncryptedAudioFileBase64": encryptedAudioFileBase64,
     };
   }
