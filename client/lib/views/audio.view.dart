@@ -28,6 +28,7 @@ class _AudioViewState extends State<AudioView> {
   bool _isEnteringFirstTime = true;
   bool _isLoading = false;
   Duration? _totalDuration;
+  final TextEditingController _secretKeyCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +120,7 @@ class _AudioViewState extends State<AudioView> {
 
                                 final res = await _cryptoService.decryptAudio(
                                   widget.audioItemModel,
-                                  "",
+                                  _secretKeyCtr.text,
                                 );
                                 final Uint8List bytes =
                                     base64.decode(res.decryptedAudioFileBase64);
@@ -232,7 +233,18 @@ class _AudioViewState extends State<AudioView> {
                           const SizedBox(width: 10),
                           const MacosIcon(CupertinoIcons.volume_up),
                         ],
-                      )
+                      ),
+                      MacosTextField(
+                        controller: _secretKeyCtr,
+                        padding: const EdgeInsets.all(8),
+                        prefix: const MacosIcon(CupertinoIcons.lock),
+                        enabled: true,
+                        placeholder: "Secret Key",
+                        maxLines: 1,
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
