@@ -234,6 +234,7 @@ class _AudioViewState extends State<AudioView> {
                           const MacosIcon(CupertinoIcons.volume_up),
                         ],
                       ),
+                      const SizedBox(height: 20),
                       MacosTextField(
                         controller: _secretKeyCtr,
                         padding: const EdgeInsets.all(8),

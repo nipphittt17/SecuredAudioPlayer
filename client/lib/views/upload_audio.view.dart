@@ -203,7 +203,18 @@ class _UploadAudioViewState extends State<UploadAudioView> {
                         "Successfully Upload Audio to List",
                         style: TextStyle(color: Colors.green),
                       ),
-                    if (_secretKey != null) SelectableText(_secretKey!)
+                    if (_triggerSuccessfulMsg) const SizedBox(height: 10),
+                    if (_triggerSuccessfulMsg)
+                      const Text(
+                        "This is the key for playing this audio. Please remember it or save at somewhere else",
+                        style: TextStyle(color: Colors.green),
+                      ),
+                    if (_secretKey != null) const SizedBox(height: 20),
+                    if (_secretKey != null)
+                      SelectableText(
+                        _secretKey!,
+                        enableInteractiveSelection: true,
+                      )
                   ],
                 ),
               ),
