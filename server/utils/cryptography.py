@@ -37,10 +37,13 @@ class AES:
 
     @staticmethod
     def encrypt_audio(raw_audio_file_base64: str, secret_key: str) -> str:
+
+        #.encode() -> convert to byte object (built-in method for Python strings)
+        # we have to convert audio(base64) and secret key as byte object
         raw_audio_file_bytes = raw_audio_file_base64.encode()
         secret_key_bytes = secret_key.encode()
 
-        # Generate a random initialization vector
+        # generate a random initialization vector (iv)
         iv = os.urandom(16)
 
         # Create an AES cipher with CBC mode and the specified key and IV
