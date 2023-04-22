@@ -75,6 +75,8 @@ The current path after running `pwd` should be:
 2.5 Install virtualenv command by running:
 `pip3 install virtualenv`
 
+If you haven't installed `pip3` before, please follow the instruction on this website https://dev.to/stankukucka/how-to-install-pip3-on-mac-2hi4
+
 2.6 Create Virtual Env on current path
 `virtualenv .`
 
