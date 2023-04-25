@@ -1,4 +1,4 @@
-import 'package:client/models/send_encrypted_audio_response.model.dart';
+import 'package:client/models/apis/requests/send_encrypted_audio_response.model.dart';
 
 class AudioItemModel {
   AudioItemModel({required this.name, required this.encryptedAudioFile});

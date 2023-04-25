@@ -1,4 +1,4 @@
-import 'package:client/models/audio_item.model.dart';
+import 'package:client/models/entities/audio_item.model.dart';
 import 'package:client/providers/audio_items.provider.dart';
 import 'package:client/widgets/audio_item.widget.dart';
 import 'package:flutter/cupertino.dart';

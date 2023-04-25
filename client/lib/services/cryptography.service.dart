@@ -1,9 +1,9 @@
 import 'package:client/data/network_api_service.dart';
-import 'package:client/models/audio_dto.model.dart';
-import 'package:client/models/audio_item.model.dart';
-import 'package:client/models/decrypted_audio_response.model.dart';
-import 'package:client/models/encrypted_audio_response.model.dart';
-import 'package:client/models/send_raw_audio_response.model.dart';
+import 'package:client/models/apis/requests/send_raw_audio_response.model.dart';
+import 'package:client/models/apis/responses/decrypted_audio_response.model.dart';
+import 'package:client/models/apis/responses/encrypted_audio_response.model.dart';
+import 'package:client/models/entities/audio_dto.model.dart';
+import 'package:client/models/entities/audio_item.model.dart';
 
 class CryptoGraphyService {
   final encryptApi = "/encrypt-audio-file";

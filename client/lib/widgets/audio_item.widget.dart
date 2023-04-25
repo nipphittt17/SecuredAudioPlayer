@@ -1,4 +1,4 @@
-import 'package:client/models/audio_item.model.dart';
+import 'package:client/models/entities/audio_item.model.dart';
 import 'package:client/views/audio.view.dart';
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';

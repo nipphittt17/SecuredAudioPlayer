@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart'
     as audio_ui;
-import 'package:client/models/audio_item.model.dart';
+import 'package:client/models/entities/audio_item.model.dart';
 import 'package:client/services/cryptography.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

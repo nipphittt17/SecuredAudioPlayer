@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:client/models/send_raw_audio_response.model.dart';
+import 'package:client/models/apis/requests/send_raw_audio_response.model.dart';
 import 'package:client/utils/cryptography.util.dart';
 
 class AudioDtoModel {

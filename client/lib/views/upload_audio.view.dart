@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:client/models/audio_dto.model.dart';
-import 'package:client/models/audio_item.model.dart';
-import 'package:client/models/encrypted_audio_response.model.dart';
+import 'package:client/models/apis/responses/encrypted_audio_response.model.dart';
+import 'package:client/models/entities/audio_dto.model.dart';
+import 'package:client/models/entities/audio_item.model.dart';
 import 'package:client/providers/audio_items.provider.dart';
 import 'package:client/services/cryptography.service.dart';
 import 'package:device_info_plus/device_info_plus.dart';

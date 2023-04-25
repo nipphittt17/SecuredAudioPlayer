@@ -1,4 +1,4 @@
-import 'package:client/models/audio_item.model.dart';
+import 'package:client/models/entities/audio_item.model.dart';
 import 'package:flutter/cupertino.dart';
 
 class AudioItemsProvider with ChangeNotifier {
