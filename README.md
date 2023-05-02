@@ -1,5 +1,21 @@
 # SecureAudioPlayer
 
+A cross-platform application with macOS experience. Designed with your privacy in mind, this app utilizes advanced AES encryption and decryption algorithms to provide a secure and enjoyable listening experience. The Secured Audio Player not only delivers high-quality audio playback, but also ensures that your audio files remain protected from unauthorized access, offering you peace of mind as you enjoy your favorite tunes. With its user-friendly interface and robust security features, the Secured Audio Player is the ultimate solution for audiophiles seeking both convenience and privacy in their audio player of choice.
+
+## Features
+
+- AES encryption and decryption for enhanced security
+- High-quality audio playback
+- User-friendly interface
+- Protection against unauthorized access
+- Support for mp3 and wmv audio format.
+
+## Requirement
+
+- macOS 11.00 or Later
+- Flutter SDK version 3.7.9
+- Python 3
+
 ## Getting Started
 
 1. Get the Flutter SDK version `3.7.9`
@@ -97,3 +113,24 @@ app.py                  data                    pyvenv.cfg              test.py 
 `python3 app.py`
 
 3. Enjoy the application!
+
+## Credit and Acknowledgement
+
+We would like to acknowledge the following resources and libraries that were used in the development of this project:
+
+[Flutter](https://flutter.dev): A mobile app development framework used for the frontend of the app.
+
+[Flask](https://flask.palletsprojects.com/en/2.2.x/): A Python framework used for the backend of the app.
+
+[Cyptography](https://pypi.org/project/cryptography/): A package which provides cryptographic recipes and primitives to Python developers.
+
+[macOS UI](https://macosui.dev): A flutter library that provide the native macOS UI element
+
+
+We would also like to extend our gratitude to the following individuals who contributed to this project:
+
+- [Nipphit Apisitpuwakul]()
+- [Atchaya Srimongkolthana]()
+- [Sinut Wattanarporn]()
+
+This project would not have been possible without the support and guidance of these resources and individuals. Thank you!
